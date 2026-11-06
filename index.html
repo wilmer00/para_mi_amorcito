@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aracely Amor, tengo una sorpresa para ti ❤️</title>
+<meta name="description" content="Tengo una sorpresa especial para ti ❤️ Ábrela...">
+<meta name="theme-color" content="#3b0f45">
+
+<!-- Open Graph (tarjeta al compartir el enlace): CAMBIA "TU-DOMINIO.vercel.app" por tu dominio real -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Aracely, tengo una sorpresa para ti ❤️">
+<meta property="og:description" content="Ábrela con cariño... alguien preparó algo especial para ti.">
+<meta property="og:image" content="https://TU-DOMINIO.vercel.app/assets/images/preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://TU-DOMINIO.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Aracely Amor, tengo una sorpresa para ti ❤️">
+<meta name="twitter:description" content="Ábrela con cariño... alguien preparó algo especial para ti.">
+<meta name="twitter:image" content="https://TU-DOMINIO.vercel.app/assets/images/preview.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<!--
+  ============================================================
+  GUÍA RÁPIDA (dónde cambiar cada cosa)
+  🎵 MÚSICA ........ pon tu archivo en  assets/audio/musica.mp3
+                     (debe llamarse exactamente así, o cambia MUSIC_SRC en js/main.js)
+  🖼️ PERSONAJES .... assets/sprites/  (bear_*.png y panda_*.png, PNG con fondo transparente)
+  🔗 VISTA PREVIA .. assets/images/preview.jpg  +  cambia TU-DOMINIO.vercel.app abajo
+  💬 WHATSAPP ...... js/main.js -> WA_PHONE
+  ============================================================
+-->
+<canvas id="bg"></canvas>
+<div id="fx"></div>
+
+<!-- Controles de música: botón silenciar + volumen (aparecen al abrir el sobre) -->
+<div class="audio-ui" id="audioUi" hidden>
+  <button id="musicBtn" aria-label="Música">🔊</button>
+  <input id="vol" type="range" min="0" max="1" step="0.05" value="0.5" aria-label="Volumen">
+</div>
+
+<!-- ESCENA 1: SOBRE -->
+<section id="s-env" class="scene active">
+  <p class="hello">Hola, Aracely ❤️<br><span>Tengo una pequeña sorpresa para ti...</span></p>
+  <div class="env-wrap" id="envWrap">
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="letter"><span>💌</span></div>
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <div class="seal">❤</div>
+    </div>
+  </div>
+  <button class="btn big pulse" id="openBtn">ABRIR MI SORPRESA 💌</button>
+</section>
+
+<!-- ESCENA 2: AVATARES -->
+<section id="s-meet" class="scene">
+  <div class="stage" id="stage">
+    <!-- Los personajes caminan desde los lados (ver js/main.js > openSurprise) -->
+    <div class="actor" id="bear1" data-who="bear"><div class="flip"><div class="body"><img src="assets/sprites/bear_front.png" alt="Osito" draggable="false"></div></div></div>
+    <div class="actor" id="panda1" data-who="panda"><div class="flip"><div class="body"><img src="assets/sprites/panda_front.png" alt="Panda Copi" draggable="false"></div></div></div>
+    <div class="mid-heart" id="midHeart">❤</div>
+  </div>
+</section>
+
+<!-- ESCENA 3: MENSAJE -->
+<section id="s-msg" class="scene">
+  <div class="card glass">
+    <pre id="typed" class="typed"></pre>
+    <button class="btn" id="msgNext" hidden>Continuar ❤️</button>
+  </div>
+</section>
+
+<!-- ESCENA 4: INVITACIÓN -->
+<section id="s-ask" class="scene">
+  <!-- 💃🕺 BAILE: una pareja (osito + panda) cuyas poses se cambian en js/main.js > DANCE.
+       Hay dos <img> que se alternan para que el cambio de pose sea suave. -->
+  <div class="dance" id="dance">
+    <div class="big-heart dance-heart">❤</div>
+    <div class="couple" id="couple" data-pose="inicio"><div class="cb">
+      <img class="on" src="assets/sprites/pareja_inicio.png" alt="El osito y el panda bailando" draggable="false">
+      <img src="assets/sprites/pareja_inicio.png" alt="" draggable="false">
+    </div></div>
+  </div>
+  <p class="hint">Míralos bailar 💃🕺 (toca la pareja)</p>
+  <h1 class="ask">ARACELY, ¿ME CONCEDES UNA CITA? ❤️</h1>
+  <p class="sub">Me encantaría invitarte a salir y pasar un momento muy bonito contigo.<br><b>¿Aceptas tener una cita conmigo?</b></p>
+  <div class="btns" id="btns">
+    <button class="btn big yes" id="yesBtn">¡SÍ, ACEPTO! ❤️</button>
+    <button class="btn ghost" id="noBtn">Déjame pensarlo 🙈</button>
+  </div>
+  <p class="soft" id="softMsg" aria-live="polite"></p>
+</section>
+
+<!-- ESCENA 5: CELEBRACIÓN -->
+<section id="s-yes" class="scene">
+  <!-- 🍒 Osito en el plato (PNG sin fondo): dos imágenes que se alternan para dar el guiño (assets/images/plato-1.png y plato-2.png) -->
+  <div class="plate" id="plate">
+    <img class="p1" src="assets/images/plato-1.png" alt="Osito acostado en un plato con una cereza" draggable="false">
+    <img class="p2" src="assets/images/plato-2.png" alt="El osito guiña un ojo" draggable="false">
+  </div>
+  <h1 class="ask">¡SABÍA QUE DIRÍAS QUE SÍ! ❤️</h1>
+  <p class="sub">Aracely, prepárate para una salida muy especial.<br>¡Será un momento que quiero compartir contigo! 🥰</p>
+  <button class="btn big yes" id="waBtn">Avisarle por WhatsApp 💬</button>
+  <button class="btn ghost" id="replayBtn">Ver de nuevo ✨</button>
+</section>
+
+<canvas id="fw"></canvas>
+<!-- Three.js (fondo 3D) desde internet. Luego tu código: -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

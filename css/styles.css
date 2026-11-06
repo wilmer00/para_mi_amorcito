@@ -1,0 +1,186 @@
+/* =====================================================
+   ESTILOS DE LA INVITACIÓN
+   Aquí se define cómo se ve todo: colores, tamaños, animaciones.
+   ===================================================== */
+/* ===== COLORES: cámbialos aquí y cambia toda la página ===== */
+:root{--cherry:#d6246e;--pink:#ffc9dc;--purple:#3b0f45;--violet:#7b3fa0;--gold:#ffd89a;--white:#fff8fb}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Quicksand',sans-serif;color:var(--white);background:radial-gradient(ellipse at 50% 20%,#6a2a7e 0%,#3b0f45 55%,#1e0725 100%);padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#bg,#fw{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#bg{z-index:0}#fw{z-index:30}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}
+.fx-item{position:absolute;will-change:transform,opacity;user-select:none}
+.scene{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1rem;padding:1.2rem;text-align:center;opacity:0;visibility:hidden;transition:opacity .9s,visibility .9s;overflow-y:auto}
+.scene.active{opacity:1;visibility:visible}
+h1,.hello{font-family:'Playfair Display',serif}
+.hello{font-size:clamp(1.6rem,6vw,2.6rem);line-height:1.3}
+.hello span{font-family:'Quicksand';font-size:.6em;color:var(--pink);font-weight:500}
+
+/* ===== BOTONES (tamaño, color, efecto al presionar) ===== */
+.btn{font:700 1.05rem 'Quicksand';color:#fff;border:0;border-radius:999px;padding:.95rem 1.8rem;min-height:52px;cursor:pointer;background:linear-gradient(135deg,var(--violet),var(--cherry));box-shadow:0 8px 28px rgba(214,36,110,.45);transition:transform .2s}
+.btn:active{transform:scale(.95)}
+.btn.big{font-size:1.2rem;padding:1.1rem 2.2rem}
+.btn.yes{background:linear-gradient(135deg,#ff4d8d,#d6246e);box-shadow:0 0 30px rgba(255,77,141,.7)}
+.btn.ghost{background:rgba(255,255,255,.12);border:1.5px solid var(--pink);box-shadow:none;backdrop-filter:blur(6px)}
+.btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.pulse{animation:pulse 1.8s infinite}
+@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 40px rgba(255,120,170,.9)}}
+
+/* ===== SOBRE 3D: sus partes (fondo, frente, solapa, carta, sello) y la animación de apertura (.open) ===== */
+.env-wrap{perspective:900px;animation:envIn 1.4s cubic-bezier(.2,.9,.3,1.2) both,floaty 4s 1.4s ease-in-out infinite}
+@keyframes envIn{from{transform:translateY(120px) rotateX(50deg) scale(.4);opacity:0}}
+@keyframes floaty{50%{transform:translateY(-12px)}}
+.envelope{position:relative;width:min(78vw,300px);height:min(52vw,200px);transform-style:preserve-3d;transform:rotateX(12deg) rotateY(-8deg)}
+.env-back,.env-front{position:absolute;inset:0;border-radius:10px}
+.env-back{background:#e8799f;box-shadow:0 25px 50px rgba(0,0,0,.5)}
+.env-front{background:linear-gradient(135deg,#ffb3cd 49.5%,transparent 50%) left/50% 100% no-repeat,linear-gradient(225deg,#ff9ec0 49.5%,transparent 50%) right/50% 100% no-repeat,linear-gradient(0deg,#ff8fb6,#ffc2d8);z-index:3;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%)}
+.env-flap{position:absolute;left:0;top:0;width:100%;height:55%;background:linear-gradient(#ffb3cd,#f77aa3);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;z-index:4;transition:transform 1s ease,z-index 0s .5s}
+.letter{position:absolute;left:8%;right:8%;top:6%;bottom:6%;background:linear-gradient(#fff,#ffeef4);border-radius:6px;z-index:2;display:grid;place-items:center;font-size:3rem;transition:transform 1.1s .8s ease}
+.seal{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);z-index:5;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff5c8f,#a60f47);display:grid;place-items:center;box-shadow:0 4px 10px #0007;transition:opacity .3s}
+.envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
+.envelope.open .seal{opacity:0}
+.envelope.open .letter{transform:translateY(-70%) scale(1.2);}
+.envelope.open{transition:transform 1.4s 1.2s,opacity 1s 1.8s;opacity:0;transform:rotateX(0) scale(1.6)}
+
+/* avatares */
+.stage{position:relative;width:100%;height:60vh;display:flex;align-items:center;justify-content:center}
+.mid-heart{position:absolute;left:50%;top:50%;font-size:1rem;color:#ff3d7f;transform:translate(-50%,-50%) scale(0);text-shadow:0 0 30px #ff3d7f,0 0 70px #ff7aa8;z-index:3}
+.mid-heart.show{animation:grow 2.2s ease-out forwards}
+@keyframes grow{0%{transform:translate(-50%,-50%) scale(0)}70%{transform:translate(-50%,-50%) scale(7)}100%{transform:translate(-50%,-50%) scale(4)}}
+
+/* ===== TARJETA DEL MENSAJE (efecto cristal) ===== */
+.glass{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:26px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.card{padding:1.8rem 1.4rem;max-width:520px;width:100%;display:flex;flex-direction:column;gap:1.2rem;align-items:center}
+.typed{font:500 clamp(1.05rem,4.3vw,1.3rem)/1.6 'Quicksand';white-space:pre-wrap;text-align:left;min-height:15em}
+
+/* ===== PANTALLA DE LA PREGUNTA: corazón latiendo, título y botones ===== */
+.duo{display:flex;align-items:center;justify-content:center;gap:.4rem}
+.big-heart{font-size:clamp(4.5rem,22vw,8rem);color:#ff2f78;text-shadow:0 0 25px #ff2f78,0 0 60px #ff6b9d;animation:beat 1.4s infinite;filter:drop-shadow(0 12px 12px rgba(0,0,0,.4));transform:perspective(300px) rotateY(0)}
+.beat{animation:beat .8s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}}
+.ask{font-size:clamp(1.7rem,7vw,3rem);line-height:1.2;max-width:14em;text-shadow:0 0 25px rgba(255,120,170,.8)}
+.sub{font-size:clamp(1rem,4vw,1.2rem);max-width:30em;line-height:1.6;color:var(--pink)}
+.sub b{color:#fff}
+.btns{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center;position:relative;min-height:60px}
+.soft{min-height:2.6em;max-width:26em;color:var(--gold);font-weight:700}
+
+/* ===== Botón de música y volumen (arriba a la derecha) ===== */
+.audio-ui{position:fixed;top:calc(env(safe-area-inset-top) + 10px);right:10px;z-index:40;display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px}
+.audio-ui button{background:none;border:0;font-size:1.3rem;cursor:pointer;min-width:34px;min-height:34px}
+.audio-ui input{width:70px;accent-color:var(--cherry)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+
+/* ===== PERSONAJES ESTILO VIDEOJUEGO =====
+   .actor  -> posición (se mueve con --x)
+   .flip   -> voltea horizontal si mira a la izquierda
+   .body   -> animación de movimiento (rebote, salto...) según la acción .a-xxx
+   <img>   -> el frame del sprite (lo cambia js/main.js) */
+.actor{--w:min(40vw,190px);--x:0px;position:relative;width:var(--w);flex:none;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.actor img{width:100%;display:block;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.35)) drop-shadow(0 0 14px rgba(255,200,220,.35))}
+.actor::after{content:"";position:absolute;left:20%;right:20%;bottom:1%;height:6%;border-radius:50%;background:radial-gradient(rgba(0,0,0,.45),transparent 70%);z-index:-1}
+.flip{transform-origin:50% 100%}
+.actor.face-left .flip{transform:scaleX(-1)}
+.body{transform-origin:50% 100%}
+.a-idle{animation:breathe 2.4s ease-in-out infinite}
+.a-walk{animation:hop .55s ease-in-out infinite}
+.a-run{animation:hop .3s ease-in-out infinite}
+.a-jump{animation:jumpy .9s ease-in-out infinite}
+.a-win{animation:jumpy .7s ease-in-out infinite}
+.a-hug{animation:sway 1.6s ease-in-out infinite}
+.a-crouch{animation:breathe 1.4s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.03,.97)}}
+@keyframes hop{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9%) rotate(2deg)}}
+@keyframes jumpy{0%,100%{transform:translateY(0) scale(1.08,.9)}20%{transform:translateY(0) scale(.95,1.06)}50%{transform:translateY(-32%) scale(1,1)}80%{transform:translateY(0) scale(1.06,.92)}}
+@keyframes sway{50%{transform:rotate(3deg) scale(1.03)}}
+
+/* Escena 2: caminan desde fuera de la pantalla, se encuentran y se abrazan */
+.stage{position:relative;width:100%;height:62vh;max-width:760px}
+.stage .actor{position:absolute;left:50%;bottom:14%;transform:translateX(calc(-50% + var(--x)));transition:transform 3s cubic-bezier(.35,.05,.3,1)}
+.stage #bear1{--x:calc(-62vw - var(--w))}
+.stage #panda1{--x:calc(62vw + var(--w))}
+.stage.meet #bear1{--x:calc(var(--w) * -.75)}
+.stage.meet #panda1{--x:calc(var(--w) * .75)}
+.stage.hug .actor{transition-duration:.9s}
+.stage.hug #bear1{--x:calc(var(--w) * -.42)}
+.stage.hug #panda1{--x:calc(var(--w) * .42)}
+.mid-heart{top:30%}
+.duo .actor{--w:min(31vw,140px)}
+.hint{font-size:.9rem;color:var(--gold);opacity:.85}
+
+/* ===== CENTRADO SEGURO EN PANTALLAS PEQUEÑAS =====
+   Los dos "::before/::after" con margin:auto centran el contenido cuando cabe,
+   y cuando NO cabe (celular chico) la pantalla se puede desplazar sin cortar nada. */
+.scene::before,.scene::after{content:"";margin:auto;flex:none}
+.scene{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+html{-webkit-text-size-adjust:100%}
+
+/* ===== 💃 ESCENARIO DE BAILE ===== */
+.dance{--dw:min(40vw,170px);position:relative;flex:none;width:min(94vw,440px);height:calc(var(--dw) * 1.9)}
+.dance .actor{--w:var(--dw);--y:0px;--s:1;position:absolute;left:50%;bottom:0;transform:translate(calc(-50% + var(--x)),var(--y)) scale(var(--s));transform-origin:50% 100%;transition:transform .9s cubic-bezier(.4,0,.2,1)}
+.dance.free .actor{transition:none}   /* durante la vuelta, JS mueve cada cuadro */
+.dance-heart{position:absolute;left:0;right:0;top:-2%;text-align:center;line-height:1;font-size:clamp(2.4rem,12vw,4.2rem);pointer-events:none}
+.a-hold{animation:sway 1.4s ease-in-out infinite}
+.a-lift{animation:liftSway 1.2s ease-in-out infinite}
+.a-twirl{animation:spinY 1.1s linear infinite}
+@keyframes liftSway{50%{transform:rotate(-7deg) scale(1.03)}0%,100%{transform:rotate(7deg)}}
+@keyframes spinY{from{transform:perspective(500px) rotateY(0)}to{transform:perspective(500px) rotateY(360deg)}}
+
+/* ===== 🍒 OSITO EN EL PLATO (última escena) ===== */
+.plate{position:relative;flex:none;width:min(86vw,440px);aspect-ratio:760/514;filter:drop-shadow(0 18px 16px rgba(0,0,0,.45)) drop-shadow(0 0 22px rgba(255,200,220,.35))}
+.scene.active .plate{animation:plateIn 1.1s cubic-bezier(.2,1.3,.3,1) both,plateFloat 3.6s 1.1s ease-in-out infinite}
+.plate img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.plate .p2{opacity:0;transition:opacity .18s}   /* el guiño */
+.plate.wink .p2{opacity:1}
+@keyframes plateIn{from{transform:scale(.5) rotate(-6deg);opacity:0}}
+@keyframes plateFloat{50%{transform:translateY(-8px) rotate(.6deg)}}
+
+/* ===== 📱 MÓVIL: pantallas bajas / horizontal ===== */
+@media (max-height:620px){
+  .scene{gap:.6rem;padding:.8rem}
+  .hello{font-size:1.4rem}
+  .envelope{width:min(60vw,230px);height:min(40vw,153px)}
+  .dance{--dw:min(30vw,110px)}
+  .ask{font-size:1.5rem}
+  .sub{font-size:.95rem;line-height:1.4}
+  .btn.big{padding:.85rem 1.6rem}
+  .stage{height:50vh}
+  .plate{width:min(60vw,320px)}
+  .typed{min-height:12em}
+}
+@media (max-width:360px){
+  .btn{font-size:.95rem;padding:.85rem 1.2rem}
+  .ask{font-size:1.5rem}
+}
+@media (min-width:900px){
+  .dance{--dw:170px;width:480px}
+  .plate{width:460px}
+}
+
+/* Deja espacio arriba para los controles de música (no tapan el contenido) */
+.scene{padding-top:calc(env(safe-area-inset-top) + 3.4rem)}
+/* Celular horizontal: personajes más pequeños para que quepa más en pantalla */
+@media (orientation:landscape) and (max-height:520px){
+  .dance{--dw:min(24vh,100px)}
+  .hint{display:none}
+  .plate{width:min(46vw,300px)}
+  .big-heart{font-size:2.6rem}
+}
+
+/* ===== 💃🕺 PAREJA BAILANDO (hoja de poses de pareja) ===== */
+.dance{width:min(86vw,380px);height:calc(min(86vw,380px) * .852 + 1.2rem)}
+.couple{position:absolute;left:0;right:0;bottom:0;aspect-ratio:270/230;transition:transform .7s ease;cursor:pointer;touch-action:manipulation}
+.cb{position:absolute;inset:0;animation:dancebob .9s ease-in-out infinite;transform-origin:50% 100%}
+.couple img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .25s;pointer-events:none;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35)) drop-shadow(0 0 16px rgba(255,200,220,.35))}
+.couple img.on{opacity:1}
+/* movimiento extra según la pose (data-pose lo cambia el JS) */
+.couple[data-pose="giro-izq"]{transform:translateX(-5%) rotate(-2deg)}
+.couple[data-pose="giro-der"]{transform:translateX(5%) rotate(2deg)}
+.couple[data-pose="balanceo"]{transform:rotate(2deg)}
+.couple[data-pose="dip"]{transform:rotate(-3deg) scale(1.03)}
+.couple[data-pose="abrazo"],.couple[data-pose="amor"]{transform:scale(1.07)}
+.couple[data-pose="descanso"] .cb{animation:breathe 2.6s ease-in-out infinite}
+@keyframes dancebob{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-4%) rotate(1.2deg)}}
+@media (max-height:620px){.dance{width:min(62vw,300px);height:calc(min(62vw,300px) * .852 + 1rem)}}
+@media (orientation:landscape) and (max-height:520px){.dance{width:min(34vw,260px);height:calc(min(34vw,260px) * .852 + 1rem)}}
+@media (min-width:900px){.dance{width:440px;height:calc(440px * .852 + 1.2rem)}}
